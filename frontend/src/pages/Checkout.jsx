@@ -163,7 +163,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="font-display text-sm font-bold text-white">{currency === "inr" ? `₹${it.inr}` : `$${it.usd}`}</span>
-                    <button onClick={() => removeItem(it.key)} className="text-zinc-500 hover:text-red-500 transition-colors">
+                    <button aria-label={`Remove ${it.project} ${it.plan}`} onClick={() => removeItem(it.key)} className="text-zinc-500 hover:text-red-500 transition-colors">
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>

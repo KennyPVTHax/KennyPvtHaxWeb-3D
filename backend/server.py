@@ -26,7 +26,7 @@ def _require_env(name: str) -> str:
     if not val:
         raise RuntimeError(
             f"Required environment variable {name} is not set. "
-            "Add it to the Railway service variables (see backend/.env.example)."
+            "Add it to your VPS environment or backend/.env (see backend/.env.example)."
         )
     return val
 
@@ -573,7 +573,7 @@ async def telegram_webhook(request: Request):
                 await asyncio.to_thread(_tg_send, chat_id, "Order not found — contact support for help.")
         else:
             await asyncio.to_thread(_tg_send, chat_id,
-                "Welcome! Buy a key on the site, then tap the delivery link to receive it here instantly.")
+                "Welcome! Pick a concept on the site, then send your notes here when you are ready.")
     return {"ok": True}
 
 

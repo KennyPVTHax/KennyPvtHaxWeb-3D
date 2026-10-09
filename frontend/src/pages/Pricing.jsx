@@ -8,12 +8,12 @@ const Pricing = () => {
       <div className="radial-red absolute inset-x-0 top-0 h-72" />
       <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-24">
         <div className="text-center">
-          <p className="font-mono2 text-xs uppercase tracking-widest text-red-500">Pricing / keys</p>
+          <p className="font-mono2 text-xs uppercase tracking-widest text-red-500">Packages / demo pricing</p>
           <h1 className="mt-3 font-display text-4xl font-bold tracking-tight md:text-6xl">
-            Pick your <span className="text-red-500">key.</span>
+            Pick a <span className="text-red-500">concept package.</span>
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-sm text-zinc-500">
-            OG Cheats and Frozen Fire share the same tiers. Kenny Admin is a weekly subscription. Keys are delivered instantly on Telegram.
+            Pick your project. Choose your access. Find your next experiment.
           </p>
         </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { X, Mail, Send, Lock, User, Loader2, KeyRound } from "lucide-react";
+import { Mail, Send, Lock, User, Loader2, KeyRound } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "./ui/dialog";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../hooks/use-toast";
 
@@ -63,17 +64,13 @@ const AuthModal = ({ open, onClose, onSuccess }) => {
   const [title, subtitle] = titles[mode];
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-md border border-red-900/50 bg-zinc-950 p-7 clip-corner">
-        <div className="grid-bg absolute inset-0 opacity-30" />
-        <button onClick={onClose} className="absolute right-4 top-4 z-10 text-zinc-500 hover:text-white">
-          <X className="h-5 w-5" />
-        </button>
+    <Dialog open={open} onOpenChange={(next) => { if (!next) onClose(); }}>
+      <DialogContent className="z-[100] max-h-[90dvh] w-[calc(100%-32px)] max-w-md overflow-y-auto border-red-900/50 bg-zinc-950 p-7 sm:rounded-md">
+        <div className="grid-bg pointer-events-none absolute inset-0 opacity-30" />
         <div className="relative">
           <p className="font-mono2 text-xs uppercase tracking-widest text-red-500">Kenny system / access</p>
-          <h2 className="mt-2 font-display text-2xl font-bold">{title}</h2>
-          <p className="mt-1 text-sm text-zinc-500">{subtitle}</p>
+          <DialogTitle className="mt-2 font-display text-2xl font-bold">{title}</DialogTitle>
+          <DialogDescription className="mt-1 text-sm text-zinc-500">{subtitle}</DialogDescription>
 
           <form onSubmit={submit} className="mt-6 space-y-4">
             {mode === "signup" && (
@@ -161,8 +158,8 @@ const AuthModal = ({ open, onClose, onSuccess }) => {
             {(mode === "forgot" || mode === "reset") && (<>Remembered it? <button onClick={() => setMode("login")} className="font-semibold text-red-400 hover:text-red-300">Back to sign in</button></>)}
           </p>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

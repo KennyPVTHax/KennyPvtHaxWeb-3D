@@ -18,4 +18,4 @@ rm -rf backend/static
 mkdir -p backend/static
 cp -r frontend/build/. backend/static/
 
-echo "=== Build complete ==="
+echo "=== Build complete. Run the FastAPI app from backend/ to serve the SPA and API. ==="

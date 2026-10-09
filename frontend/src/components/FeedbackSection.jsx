@@ -3,11 +3,12 @@ import { Star, Loader2, Quote, Send, ImagePlus, X } from "lucide-react";
 import { api } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../hooks/use-toast";
+import { demoFeedback } from "../mock";
 
 const Stars = ({ value, onChange, size = "h-4 w-4" }) => (
   <div className="flex items-center gap-0.5">
     {[1, 2, 3, 4, 5].map((n) => (
-      <button key={n} type="button" disabled={!onChange} onClick={() => onChange?.(n)}
+      <button key={n} type="button" aria-label={`${n} star${n === 1 ? "" : "s"}`} disabled={!onChange} onClick={() => onChange?.(n)}
         className={onChange ? "transition-transform hover:scale-110" : "cursor-default"}>
         <Star className={`${size} ${n <= value ? "fill-red-500 text-red-500" : "text-zinc-600"}`} />
       </button>
@@ -49,7 +50,11 @@ const FeedbackSection = () => {
   const [lightbox, setLightbox] = useState(null);
 
   const load = () => {
-    api.get("/feedback").then((res) => setItems(res.data.feedback)).finally(() => setLoading(false));
+    api
+      .get("/feedback")
+      .then((res) => setItems(Array.isArray(res.data.feedback) ? res.data.feedback : demoFeedback))
+      .catch(() => setItems(demoFeedback))
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => { load(); }, []);
@@ -94,7 +99,7 @@ const FeedbackSection = () => {
             What the <span className="text-red-500">squad</span> says
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-sm text-zinc-500">
-            Real reviews from players running KennyPvtHax across PUBGM &amp; BGMI.
+            Notes from around the lab. Concept community feed.
           </p>
         </div>
 
@@ -130,14 +135,14 @@ const FeedbackSection = () => {
             <p className="mt-1 text-xs text-zinc-500">Share your experience — add a screenshot for extra cred.</p>
             <div className="mt-4 space-y-4">
               <input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                placeholder="Your name / gamertag"
+                placeholder="Your name / gamertag" aria-label="Your name or gamertag"
                 className="w-full border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-sm text-white outline-none placeholder:text-zinc-600 focus:border-red-600/60" />
               <div className="flex items-center justify-between">
                 <span className="font-mono2 text-xs uppercase tracking-widest text-zinc-500">Rating</span>
                 <Stars value={form.rating} onChange={(n) => setForm((f) => ({ ...f, rating: n }))} size="h-5 w-5" />
               </div>
               <textarea value={form.message} onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-                required rows={4} placeholder="Tell us how it went..."
+                required rows={4} placeholder="Tell us how it went..." aria-label="Your review"
                 className="w-full resize-none border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-sm text-white outline-none placeholder:text-zinc-600 focus:border-red-600/60" />
 
               {image ? (

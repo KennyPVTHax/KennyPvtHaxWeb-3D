@@ -1,164 +1,45 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowRight, KeyRound, Send, Cpu, ShieldCheck, Radio, Video } from "lucide-react";
-import { coreFeatures, showcaseStats, telegramUrl } from "../mock";
+import { Link } from "react-router-dom";
+import { ArrowDown, ArrowRight, ArrowUpRight, Binary, Code2, Cpu, Gamepad2, GitBranch, Terminal } from "lucide-react";
+import { telegramUrl } from "../mock";
+import CoreViewer from "../components/CoreViewer";
 import ProjectsSection from "../components/ProjectsSection";
 import DemosSection from "../components/DemosSection";
 import FeedbackSection from "../components/FeedbackSection";
 
-const Home = () => {
-  const navigate = useNavigate();
+const capabilities = [
+  { icon: Binary, title: "Break it down.", sub: "REVERSE ENGINEERING", text: "From raw bytes to the bigger picture. Explore the structures beneath the surface." },
+  { icon: Gamepad2, title: "Push the play.", sub: "GAME SYSTEMS", text: "Timing, telemetry, and a feel for the game. Experiments made for curious players." },
+  { icon: Code2, title: "Build it forward.", sub: "CREATIVE DEVELOPMENT", text: "Turn the discoveries into tools, prototypes, and unexpected new experiences." },
+];
 
-  return (
-    <div>
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <video className="hero-video" autoPlay loop muted playsInline poster="/kenny-logo.jpg">
-          <source src="/cyber-city.mp4" type="video/mp4" />
-        </video>
-        <div className="hero-video-overlay" />
-        <div className="grid-bg absolute inset-0 opacity-30" />
-        <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-20 md:pb-32 md:pt-28">
-          <div className="animate-float-up">
-            <img src="/kenny-logo.jpg" alt="KennyPvtHax" className="h-14 w-14 rounded-lg border border-red-600/50 object-cover shadow-lg shadow-red-900/40" />
-            <h1 className="mt-5 font-display text-5xl font-bold leading-[0.9] tracking-tight md:text-7xl lg:text-8xl">
-              <span className="name-wrap"><span className="animated-name">KennyPvtHax</span></span>
-            </h1>
-            <p className="mt-6 font-tech text-lg text-zinc-400 md:text-2xl">
-              Kernel-level capability for PUBGM &amp; BGMI. Stable operation. Instant delivery.
-            </p>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-zinc-500 md:text-base">
-              Premium plugins engineered to run in the system kernel while you stay in control at the interface. Undetected, stream-safe and updated within hours of every patch.
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => navigate("/pricing")}
-                className="group inline-flex items-center gap-2 bg-red-600 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-red-500 clip-corner"
-              >
-                <KeyRound className="h-4 w-4" /> Get your key
-              </button>
-              <button
-                onClick={() => navigate("/pricing")}
-                className="group inline-flex items-center gap-2 border border-zinc-700 bg-zinc-900/50 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-red-600/60 clip-corner"
-              >
-                View pricing <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
-              <a
-                href={telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-2 py-3.5 text-sm font-semibold text-zinc-300 transition-colors hover:text-red-400"
-              >
-                <Send className="h-4 w-4" /> Join Telegram
-              </a>
-            </div>
-          </div>
-
-          {/* Runtime status card */}
-          <div className="mt-16 grid gap-4 md:grid-cols-4">
-            {[
-              { icon: Cpu, label: "Kernel core", value: "Running", sub: "Stable status" },
-              { icon: ShieldCheck, label: "Anti-cheat", value: "Bypassed", sub: "Evasion active" },
-              { icon: Radio, label: "Stream mode", value: "Enabled", sub: "ESP concealed" },
-              { icon: Video, label: "Display layer", value: "Clean", sub: "Overlay hidden" },
-            ].map((s, i) => (
-              <div
-                key={s.label}
-                className="tech-card group p-5 clip-corner"
-                style={{ animation: `float-up 0.6s ease ${0.2 + i * 0.08}s both` }}
-              >
-                <span className="grid h-10 w-10 place-items-center border border-red-600/40 bg-red-600/10 transition-colors group-hover:bg-red-600/20">
-                  <s.icon className="h-5 w-5 text-red-500" />
-                </span>
-                <p className="mt-4 font-mono2 text-[11px] uppercase tracking-widest text-zinc-500">{s.label}</p>
-                <p className="mt-1 font-display text-xl font-bold text-white">{s.value}</p>
-                <p className="text-xs text-zinc-500">{s.sub}</p>
-              </div>
-            ))}
-          </div>
+export default function Home() {
+  return <div className="home-page">
+    <section className="core-hero">
+      <div className="hero-grid" aria-hidden="true" />
+      <div className="hero-inner">
+        <div className="hero-copy">
+          <div className="eyebrow"><span className="eyebrow-line" /> REVERSE ENGINEERING / GAMING</div>
+          <h1>Kenny<span>PvtHax</span><span className="hero-heading-dot">.</span></h1>
+          <p className="hero-tagline">Beneath the game.<br /> Beyond the ordinary.</p>
+          <p className="hero-description">An independent lab for curious minds. We take systems apart, explore the possibilities, and build what comes next.</p>
+          <div className="hero-actions"><Link to="/demos" className="button-primary">Explore the lab <ArrowUpRight size={18} /></Link><Link to="/team" className="button-secondary">Meet the developers <ArrowRight size={17} /></Link></div>
+          <div className="hero-footnote"><span className="status-led" /> ALWAYS CURIOUS. NEVER FINISHED.</div>
         </div>
-      </section>
-
-      {/* PROJECTS */}
-      <ProjectsSection />
-
-      {/* PER-PROJECT DEMOS */}
-      <DemosSection />
-
-      {/* CORE FEATURES */}
-      <section className="relative border-t border-zinc-800/80 py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="font-mono2 text-xs uppercase tracking-widest text-red-500">Core capabilities</p>
-              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight md:text-5xl">
-                Control at the interface.<br />Run in the <span className="text-red-500">kernel.</span>
-              </h2>
-            </div>
-            <button
-              onClick={() => navigate("/features")}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-300 hover:text-red-400 transition-colors"
-            >
-              View feature details <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {coreFeatures.map((f, i) => (
-              <div key={f.code} className="tech-card group p-8 clip-corner" style={{ animation: `float-up 0.6s ease ${i * 0.06}s both` }}>
-                <div className="flex items-center justify-between">
-                  <span className="font-display text-3xl font-bold text-red-600/30 transition-colors group-hover:text-red-600/70">{f.code}</span>
-                  <span className="h-1.5 w-1.5 rounded-full bg-red-600 opacity-40 transition-opacity group-hover:opacity-100" />
-                </div>
-                <h3 className="mt-4 font-display text-xl font-bold text-white">{f.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-500">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {showcaseStats.map((s) => (
-              <div key={s.label} className="border-l-2 border-red-600/50 pl-4">
-                <p className="font-display text-3xl font-bold text-white">{s.value}</p>
-                <p className="font-mono2 text-xs uppercase tracking-widest text-zinc-500">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FEEDBACK */}
-      <FeedbackSection />
-
-      {/* CTA */}
-      <section className="relative overflow-hidden border-t border-zinc-800/80 py-20 md:py-28">
-        <div className="radial-red absolute inset-0" />
-        <div className="relative mx-auto max-w-3xl px-6 text-center">
-          <p className="font-mono2 text-xs uppercase tracking-widest text-red-500">Ready to start</p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight md:text-5xl">
-            Get the latest KennyPvtHax build.
-          </h2>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => navigate("/pricing")}
-              className="inline-flex items-center gap-2 bg-red-600 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-red-500 clip-corner"
-            >
-              Buy a key <ArrowRight className="h-4 w-4" />
-            </button>
-            <a
-              href={telegramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-zinc-700 bg-zinc-900/50 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-red-600/60 clip-corner"
-            >
-              <Send className="h-4 w-4" /> Join Telegram
-            </a>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-};
-
-export default Home;
+        <CoreViewer className="hero-model" />
+        <span className="hero-side-note" aria-hidden="true">DISASSEMBLE / UNDERSTAND / REIMAGINE</span>
+      </div>
+      <div className="hero-bottom"><div className="hero-bottom-inner"><a href="#projects" className="scroll-cue"><ArrowDown size={15} /> SCROLL TO DISCOVER</a><span><Cpu size={14} /> KX-01 / OPEN ASSEMBLY</span><span className="mono hero-bottom-end">EST. 2024 <span className="accent-text">[ INDEPENDENT ]</span></span></div></div>
+    </section>
+    <div className="discipline-strip"><div><span><Binary size={18} /> REVERSE ENGINEERING</span><i>+</i><span><Gamepad2 size={18} /> GAME SYSTEMS</span><i>+</i><span><Terminal size={18} /> CREATIVE CODING</span><i>+</i><span><GitBranch size={18} /> OPEN EXPLORATION</span></div></div>
+    <ProjectsSection />
+    <section className="capability-section section-shell">
+      <div className="section-heading"><div><span className="eyebrow">02 / THE MINDSET</span><h2>Curiosity is the <span className="accent-text">engine.</span></h2></div><Link to="/features" className="text-link">Inside the lab <ArrowUpRight size={17} /></Link></div>
+      <div className="capability-grid">{capabilities.map((item, i) => <article className="capability" key={item.sub}><span className="capability-number">0{i + 1}</span><item.icon size={28} /><span className="eyebrow">{item.sub}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
+    </section>
+    <DemosSection />
+    <section className="crew-callout section-shell"><div><span className="eyebrow">04 / PEOPLE OVER PROTOCOLS</span><h2>A few minds.<br /><span className="accent-text">Zero ordinary ideas.</span></h2></div><div><p>Researchers, developers, and players. Different obsessions, one shared drive to see what is possible.</p><Link to="/team" className="button-secondary">Meet the crew <ArrowUpRight size={17} /></Link></div><span className="crew-callout-mark" aria-hidden="true">{ "{ }" }</span></section>
+    <FeedbackSection />
+    <section className="community-band section-shell"><div><span className="eyebrow">THE NEXT DISCOVERY STARTS WITH A CONVERSATION</span><h2>Stay in the loop.</h2></div><a href={telegramUrl} target="_blank" rel="noopener noreferrer" className="button-primary">Join the community <ArrowUpRight size={18} /></a></section>
+  </div>;
+}

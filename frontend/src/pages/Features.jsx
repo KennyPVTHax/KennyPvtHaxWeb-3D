@@ -1,85 +1,23 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { coreFeatures, projects } from "../mock";
-import { Check, ArrowRight, Cpu, Layers, Eye, Shield } from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight, Binary, Code2, Cpu, GitBranch, Radar, Terminal } from "lucide-react";
 
-const layers = [
-  { code: "01", group: "Hardware layer", title: "Hardware bullet tracking", desc: "Trajectory tracking computed at the hardware layer for pixel-accurate aim.", icon: Cpu },
-  { code: "02", group: "JOLT check", title: "Jolt obstacle check", desc: "Collision state detection so shots respect real geometry.", icon: Shield },
-  { code: "03", group: "Display layer", title: "Stream mode", desc: "Stream concealment hides overlays while recording.", icon: Eye },
-  { code: "04", group: "Kernel layer", title: "Kernel capability", desc: "Core capabilities run inside the system kernel for stability.", icon: Layers },
+const tracks = [
+  { name: "Analysis", icon: Binary, title: "Read between the bytes.", text: "Trace the structure of a system. Follow the symbols, map its behavior, and turn observations into understanding.", command: "analyze sample.bin", lines: ["0x00401000  entry_point", "0x00401024  initialize_context", "0x00401080  resolve_symbols", "0x00401120  render_frame"], label: "SYMBOL MAP", color: "var(--mint)" },
+  { name: "Game systems", icon: Radar, title: "Understand the play.", text: "Explore how timing, feedback, and game logic shape a player's experience. Every loop is an opportunity to learn.", command: "inspect arena.scene", lines: ["tick.001  initialize_world", "tick.002  synchronize_inputs", "tick.003  simulate_physics", "tick.004  compose_frame"], label: "FRAME TRACE", color: "var(--acid)" },
+  { name: "Development", icon: Code2, title: "Make the next thing.", text: "Bring an idea into the world. Prototype quickly, make the details count, and keep improving what people can experience.", command: "build next_experiment", lines: ["module.01  resolve_dependencies", "module.02  compile_sources", "module.03  validate_contracts", "module.04  package_release"], label: "BUILD GRAPH", color: "var(--signal)" },
 ];
 
-const Features = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="relative">
-      <div className="grid-bg absolute inset-x-0 top-0 h-96 opacity-50" />
-      <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <p className="font-mono2 text-xs uppercase tracking-widest text-red-500">KC / core capabilities</p>
-        <h1 className="mt-3 font-display text-4xl font-bold tracking-tight md:text-6xl">
-          Every layer, <span className="text-red-500">weaponised.</span>
-        </h1>
-        <p className="mt-4 max-w-xl text-sm text-zinc-500">
-          From the hardware layer to the kernel, each stage of the runtime is tuned for stability, stealth and control.
-        </p>
-
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {layers.map((l) => (
-            <div key={l.code} className="group relative border border-zinc-800 bg-zinc-900/40 p-8 transition-colors hover:border-red-600/60 clip-corner">
-              <div className="flex items-center justify-between">
-                <span className="grid h-10 w-10 place-items-center border border-red-600/50 bg-red-600/10">
-                  <l.icon className="h-5 w-5 text-red-500" />
-                </span>
-                <span className="font-mono2 text-xs text-zinc-500">/ {l.code}</span>
-              </div>
-              <p className="mt-5 font-mono2 text-[11px] uppercase tracking-widest text-zinc-500">{l.group}</p>
-              <h3 className="mt-1 font-display text-2xl font-bold text-white">{l.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-500">{l.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-20">
-          <h2 className="font-display text-2xl font-bold md:text-3xl">Included with every build</h2>
-          <div className="mt-8 grid gap-px overflow-hidden border border-zinc-800 bg-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
-            {coreFeatures.map((f) => (
-              <div key={f.code} className="bg-zinc-950 p-8 transition-colors hover:bg-zinc-900">
-                <Check className="h-5 w-5 text-red-500" />
-                <h3 className="mt-3 font-display text-lg font-bold text-white">{f.title}</h3>
-                <p className="mt-2 text-sm text-zinc-500">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-20 grid gap-6 md:grid-cols-3">
-          {projects.map((p) => (
-            <div key={p.id} className="border border-zinc-800 bg-zinc-900/40 p-6 clip-corner">
-              <h3 className="font-display text-xl font-bold text-white">{p.name}</h3>
-              <p className="mt-1 font-mono2 text-xs text-red-400">{p.tagline}</p>
-              <ul className="mt-4 space-y-2">
-                {p.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-zinc-300">
-                    <Check className="h-4 w-4 text-red-500" /> {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-16 flex justify-center">
-          <button
-            onClick={() => navigate("/pricing")}
-            className="inline-flex items-center gap-2 bg-red-600 px-6 py-3.5 text-sm font-semibold text-white hover:bg-red-500 transition-colors clip-corner"
-          >
-            See pricing <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Features;
+export default function Features() {
+  const [selected, setSelected] = useState(0);
+  const track = tracks[selected];
+  return <div className="features-page section-shell">
+    <div className="lab-heading"><div><span className="eyebrow">INSIDE THE LAB / DISCIPLINES</span><h1>Look closer.<br /><span className="accent-text">Go deeper.</span></h1></div><p>Systems to explore. Questions to ask.<br />A workbench for the next idea.</p></div>
+    <div className="feature-tabs segmented-control" role="group" aria-label="Research discipline">{tracks.map((item, index) => <button key={item.name} aria-pressed={selected === index} onClick={() => setSelected(index)}>{item.name}</button>)}</div>
+    <section className="feature-workbench">
+      <div className="feature-copy" key={track.name}><track.icon size={32} style={{ color: track.color }} /><h2>{track.title}</h2><p>{track.text}</p><Link to="/demos" className="text-link">Explore the lab <ArrowUpRight size={16} /></Link></div>
+      <div className="trace-tool" aria-live="polite"><div className="trace-title"><Terminal size={14} /><span>{track.label}</span><span className="status-led" /></div><p className="trace-command"><span>$</span> {track.command}</p><div className="trace-lines">{track.lines.map((line, index) => <div key={line}><span className="trace-node" style={{ background: track.color }} /><code>{line}</code><span className="trace-order">0{index + 1}</span></div>)}</div><div className="trace-footer"><span>EXAMPLE TRACE</span><span>4 / 4 RESOLVED</span></div></div>
+    </section>
+    <section className="feature-principles"><div className="section-heading"><div><span className="eyebrow">THE COMMON THREAD</span><h2>Built on a few good principles.</h2></div></div><div className="capability-grid">{[{ icon: Cpu, title: "Understand the system", text: "Investigate the layers, not just the output. The details tell the story." }, { icon: GitBranch, title: "Share the process", text: "Keep discoveries clear, repeatable, and useful to the next curious mind." }, { icon: Code2, title: "Make it tangible", text: "Turn research into prototypes that people can explore and question." }].map((item) => <article className="capability" key={item.title}><item.icon size={28} /><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></section>
+  </div>;
+}

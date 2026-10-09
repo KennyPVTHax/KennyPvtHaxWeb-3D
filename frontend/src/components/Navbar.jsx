@@ -1,123 +1,66 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingCart, User, LogIn, ShieldAlert } from "lucide-react";
-import { navLinks, logoSrc } from "../mock";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { ArrowUpRight, Menu, X, ShoppingCart, User, LogIn, ShieldCheck } from "lucide-react";
+import { navLinks } from "../mock";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import { Button } from "./ui/button";
 import AuthModal from "./AuthModal";
+import ExperienceControls, { IconButton, ThemeSwatches } from "./ExperienceControls";
 
-const Navbar = () => {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const { count } = useCart();
   const { user } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+  const menuRef = useRef(null);
+  const progressRef = useRef(null);
 
+  useEffect(() => { setOpen(false); }, [location]);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    if (!open) return;
+    const close = (event) => {
+      if (event.key === "Escape") { setOpen(false); menuRef.current?.focus(); }
+    };
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
+  }, [open]);
+  useEffect(() => {
+    let frame;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const length = document.documentElement.scrollHeight - window.innerHeight;
+        if (progressRef.current) progressRef.current.style.transform = `scaleX(${length > 0 ? window.scrollY / length : 0})`;
+      });
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
+  }, [location]);
 
-  const handleNav = (to) => {
-    setOpen(false);
-    if (to.startsWith("/#")) {
-      const id = to.slice(2);
-      if (location.pathname !== "/") {
-        navigate("/");
-        setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 250);
-      } else {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      navigate(to);
-    }
-  };
-
-  return (
-    <header className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? "border-b border-zinc-800/80 glass" : "border-b border-transparent bg-transparent"}`}>
-      <nav className="mx-auto max-w-7xl px-6">
-        <div className="flex h-16 items-center justify-between">
-          <button onClick={() => handleNav("/")} className="flex items-center gap-2.5 group">
-            <img src={logoSrc} alt="KennyPvtHax" className="h-9 w-9 rounded-md border border-red-600/50 object-cover" />
-            <span className="font-display text-lg font-bold tracking-tight">
-              Kenny<span className="text-red-500">PvtHax</span>
-            </span>
-          </button>
-
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((l) => (
-              <button key={l.label} onClick={() => handleNav(l.to)}
-                className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors">
-                {l.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button onClick={() => navigate("/checkout")} className="relative p-2 text-zinc-300 hover:text-white transition-colors">
-              <ShoppingCart className="h-5 w-5" />
-              {count > 0 && (
-                <span className="absolute -right-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-red-600 text-[10px] font-bold text-white">{count}</span>
-              )}
-            </button>
-
-            {user ? (
-              <>
-                {user.is_admin && (
-                  <button onClick={() => navigate("/admin")}
-                    className="hidden sm:inline-flex items-center gap-2 border border-red-600/50 bg-red-600/10 px-3 py-2 text-sm font-semibold text-red-300 hover:bg-red-600/20 transition-colors clip-corner">
-                    <ShieldAlert className="h-4 w-4" /> Admin
-                  </button>
-                )}
-                <button onClick={() => navigate("/account")}
-                  className="inline-flex items-center gap-2 border border-zinc-700 px-3 py-2 text-sm font-semibold text-zinc-200 hover:border-red-600/60 transition-colors clip-corner">
-                  <User className="h-4 w-4 text-red-500" />
-                  <span className="hidden sm:inline max-w-[90px] truncate">{user.name}</span>
-                </button>
-              </>
-            ) : (
-              <button onClick={() => setAuthOpen(true)}
-                className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-zinc-300 hover:text-white transition-colors px-2">
-                <LogIn className="h-4 w-4" /> Sign in
-              </button>
-            )}
-
-            <Button onClick={() => navigate("/pricing")} className="hidden sm:inline-flex bg-red-600 hover:bg-red-500 text-white font-semibold clip-corner">
-              Buy Key
-            </Button>
-            <button className="md:hidden p-2 text-zinc-300" onClick={() => setOpen((v) => !v)}>
-              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {open && (
-        <div className="md:hidden border-t border-zinc-800 glass">
-          <div className="px-6 py-3 space-y-1">
-            {navLinks.map((l) => (
-              <button key={l.label} onClick={() => handleNav(l.to)}
-                className="block w-full text-left px-3 py-2.5 text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800/60 rounded">
-                {l.label}
-              </button>
-            ))}
-            {!user && (
-              <button onClick={() => { setOpen(false); setAuthOpen(true); }}
-                className="block w-full text-left px-3 py-2.5 text-sm font-semibold text-red-400">
-                Sign in / Join
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onSuccess={() => navigate("/account")} />
-    </header>
-  );
-};
-
-export default Navbar;
+  return <header className="site-header">
+    <nav className="site-nav" aria-label="Main navigation">
+      <Link to="/" className="brand" aria-label="KennyPvtHax home"><span className="brand-mark">K<span>/</span>X</span><span className="brand-name">Kenny<span>PvtHax</span><small>INDEPENDENT RESEARCH LAB</small></span></Link>
+      <div className="desktop-nav">
+        {navLinks.map((link) => <NavLink key={link.to} end to={link.to} className={({ isActive }) => `nav-link ${isActive && !link.to.includes("#") ? "active" : ""}`}>{link.label}</NavLink>)}
+      </div>
+      <div className="nav-actions">
+        <ExperienceControls />
+        <IconButton label={`Shortlist${count ? ` (${count})` : ""}`} onClick={() => navigate("/checkout")}><ShoppingCart size={17} />{count > 0 && <span className="cart-count">{count}</span>}</IconButton>
+        <IconButton label={user ? "Your account" : "Sign in"} className="account-button" onClick={() => user ? navigate("/account") : setAuthOpen(true)}>{user ? <User size={17} /> : <LogIn size={17} />}</IconButton>
+        {user?.is_admin && <IconButton label="Admin" onClick={() => navigate("/admin")}><ShieldCheck size={17} /></IconButton>}
+        <Link to="/demos" className="button-primary nav-cta">Enter the lab <ArrowUpRight size={15} /></Link>
+        <button ref={menuRef} type="button" className="icon-button menu-toggle" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}>{open ? <X size={20} /> : <Menu size={20} />}</button>
+      </div>
+    </nav>
+    {open && <nav id="mobile-menu" className="mobile-menu" aria-label="Mobile navigation">
+      {navLinks.map((link, index) => <NavLink end key={link.to} to={link.to}><span className="mono">0{index + 1}</span>{link.label}<ArrowUpRight size={16} /></NavLink>)}
+      <div className="mobile-menu-bottom"><ThemeSwatches />{!user && <button onClick={() => { setOpen(false); setAuthOpen(true); }}><LogIn size={16} />Sign in</button>}</div>
+    </nav>}
+    <div className="reading-progress" ref={progressRef} />
+    <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onSuccess={() => navigate("/account")} />
+  </header>;
+}

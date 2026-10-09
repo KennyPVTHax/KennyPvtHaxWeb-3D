@@ -1,18 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Download as DownloadIcon, Send, Smartphone, ShieldCheck, KeyRound } from "lucide-react";
+import { Download as DownloadIcon, Send, Smartphone, ShieldCheck, Layers3 } from "lucide-react";
 import { serverStatus, telegramUrl } from "../mock";
 
 const steps = [
-  { code: "01", title: "Buy a key", desc: "Choose your project and duration on the pricing page, then check out with UPI or card." },
-  { code: "02", title: "Get it on Telegram", desc: "Your key is generated instantly and delivered to your Telegram username." },
-  { code: "03", title: "Download the loader", desc: "Grab the latest build below and inject following the in-app guide." },
-  { code: "04", title: "Play", desc: "Enter your key in the loader and drop into PUBGM or BGMI." },
+  { code: "01", title: "Pick a direction", desc: "Compare the concept demos and choose the strongest identity for the final site." },
+  { code: "02", title: "Share notes", desc: "Send the team your preferred colors, sections, names and developer details." },
+  { code: "03", title: "Build the pass", desc: "Carry the chosen direction across every page and production surface." },
+  { code: "04", title: "Launch", desc: "Deploy the finished site on your VPS behind a domain and HTTPS." },
 ];
 
 const builds = [
-  { name: "PUBG Mobile Global", tag: "Android 64-bit", size: "38 MB" },
-  { name: "BGMI (India)", tag: "Android 64-bit", size: "38 MB" },
+  { name: "Neon Breach package", tag: "Red command UI", size: "Concept" },
+  { name: "Frozen Trace package", tag: "Blue lab UI", size: "Concept" },
 ];
 
 const Download = () => {
@@ -22,14 +22,14 @@ const Download = () => {
       <div className="radial-red absolute inset-x-0 top-0 h-72" />
       <div className="relative mx-auto max-w-5xl px-6 py-16 md:py-24">
         <div className="text-center">
-          <p className="font-mono2 text-xs uppercase tracking-widest text-red-500">Download / loader</p>
+          <p className="font-mono2 text-xs uppercase tracking-widest text-red-500">Direction / package</p>
           <h1 className="mt-3 font-display text-4xl font-bold tracking-tight md:text-6xl">
-            Get the latest <span className="text-red-500">build.</span>
+            Package the final <span className="text-red-500">look.</span>
           </h1>
           <div className="mt-5 inline-flex items-center gap-3 border border-zinc-800 bg-zinc-900/60 px-4 py-2 font-mono2 text-xs">
             <span className="live-dot inline-block h-2 w-2 rounded-full bg-green-400" />
             <span className="text-green-400">{serverStatus.status}</span>
-            <span className="text-zinc-500">· {serverStatus.version} · undetected</span>
+            <span className="text-zinc-500">· {serverStatus.version} · demo-ready</span>
           </div>
         </div>
 
@@ -49,15 +49,15 @@ const Download = () => {
                 onClick={() => navigate("/pricing")}
                 className="inline-flex items-center gap-2 bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-500 transition-colors clip-corner"
               >
-                <DownloadIcon className="h-4 w-4" /> Get
+                <DownloadIcon className="h-4 w-4" /> Review
               </button>
             </div>
           ))}
         </div>
 
         <div className="mt-6 flex items-center gap-3 border border-red-900/40 bg-red-950/20 p-4 text-sm text-zinc-400 clip-corner">
-          <KeyRound className="h-5 w-5 shrink-0 text-red-500" />
-          A valid key is required to run any build. No key yet? Grab one from pricing — it arrives on Telegram instantly.
+          <Layers3 className="h-5 w-5 shrink-0 text-red-500" />
+          These are concept packages for review. The final version can keep pricing or become a pure portfolio/community site.
         </div>
 
         <div className="mt-16">
@@ -76,7 +76,7 @@ const Download = () => {
         <div className="mt-16 flex flex-col items-center gap-4 border border-zinc-800 bg-zinc-900/40 p-8 text-center clip-corner">
           <ShieldCheck className="h-8 w-8 text-red-500" />
           <h3 className="font-display text-xl font-bold">Need help with setup?</h3>
-          <p className="max-w-md text-sm text-zinc-500">Our team is on Telegram around the clock for keys, installation and troubleshooting.</p>
+          <p className="max-w-md text-sm text-zinc-500">Share final names, links, developer roles and screenshots when you are ready for the production pass.</p>
           <a
             href={telegramUrl}
             target="_blank"

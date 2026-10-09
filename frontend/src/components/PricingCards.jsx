@@ -33,7 +33,7 @@ const PricingCards = () => {
       usd: e.usd,
     });
     toast({
-      title: "Added to cart",
+      title: "Added to shortlist",
       description: `${product.project} · ${plan.label} (${plan.duration})`,
     });
   };
@@ -45,6 +45,7 @@ const PricingCards = () => {
           {currencies.map((c) => (
             <button
               key={c.id}
+              aria-pressed={currency === c.id}
               onClick={() => setCurrency(c.id)}
               className={`px-5 py-2 text-sm font-semibold font-mono2 transition-colors ${
                 currency === c.id ? "bg-red-600 text-white" : "text-zinc-400 hover:text-white"
@@ -99,10 +100,10 @@ const PricingCards = () => {
                       <span className="mb-1 text-sm text-zinc-500">/ {plan.duration}</span>
                     </div>
                     <ul className="mt-5 space-y-2 text-sm text-zinc-400">
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500" /> Instant Telegram key</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500" /> Full feature access</li>
-                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500" /> Free updates during key</li>
-                      {isAdmin && <li className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500" /> All imaginary powers (demo)</li>}
+                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500" /> Demo concept access</li>
+                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500" /> Full visual direction</li>
+                      <li className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500" /> Iteration notes included</li>
+                      {isAdmin && <li className="flex items-center gap-2"><Check className="h-4 w-4 text-red-500" /> Cinematic boss-room concept</li>}
                     </ul>
                     <button
                       onClick={() => handleAdd(product, plan)}
@@ -112,7 +113,7 @@ const PricingCards = () => {
                           : "border border-zinc-700 bg-zinc-800/60 text-white hover:border-red-600/60 hover:bg-red-600/10"
                       }`}
                     >
-                      <ShoppingCart className="h-4 w-4" /> Add to cart
+                      <ShoppingCart className="h-4 w-4" /> Add concept
                     </button>
                   </div>
                 ))}
@@ -127,7 +128,7 @@ const PricingCards = () => {
           onClick={() => navigate("/checkout")}
           className="inline-flex items-center gap-2 border border-red-600/50 bg-red-600/10 px-6 py-3 text-sm font-semibold text-red-300 hover:bg-red-600/20 transition-colors clip-corner"
         >
-          <ShoppingCart className="h-4 w-4" /> Go to checkout
+          <ShoppingCart className="h-4 w-4" /> Review shortlist
         </button>
       </div>
     </div>
